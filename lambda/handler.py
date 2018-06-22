@@ -3,6 +3,8 @@ from email.parser import Parser
 import email.policy
 from io import StringIO
 from csv import DictReader
+from datetime import datetime
+from pytz import timezone
 
 s3 = boto3.resource("s3")
 
@@ -52,3 +54,13 @@ def parse_csv(csv):
     reader = DictReader(csv_stream)
 
     return [row for row in reader]
+
+
+def transform_row(row):
+    start_date = timezone("Europe/London").localize(
+        datetime.strptime(
+            "{} {}".format(row["Date"], row["Start Time"]), "%d-%b-%Y %H:%M"
+        )
+    )
+
+    return {"start_date": start_date.isoformat()}
