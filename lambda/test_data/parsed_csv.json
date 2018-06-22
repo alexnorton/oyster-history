@@ -1,0 +1,92 @@
+[
+	{
+		"Date": "03-Dec-2017",
+		"Start Time": "17:08",
+		"End Time": "17:20",
+		"Journey/Action": "Shepherd's Bush (Central line) to Marble Arch",
+		"Charge": "1.60",
+		"Credit": "",
+		"Balance": "18.60",
+		"Note": ""
+	},
+	{
+		"Date": "01-Dec-2017",
+		"Start Time": "03:44",
+		"End Time": "03:53",
+		"Journey/Action": "Holborn to Marble Arch",
+		"Charge": ".00",
+		"Credit": "",
+		"Balance": "20.20",
+		"Note": "The fare for this journey was capped as you reached the daily charging limit for the zones used"
+	},
+	{
+		"Date": "01-Dec-2017",
+		"Start Time": "03:26",
+		"End Time": "",
+		"Journey/Action": "Bus journey, route N243",
+		"Charge": ".00",
+		"Credit": "",
+		"Balance": "20.20",
+		"Note": "The fare for this journey was capped as you reached the daily charging limit for the zones used"
+	},
+	{
+		"Date": "01-Dec-2017",
+		"Start Time": "22:30",
+		"End Time": "",
+		"Journey/Action": "Bus journey, route 242",
+		"Charge": "1.15",
+		"Credit": "",
+		"Balance": "20.20",
+		"Note": "The fare for this journey was capped as you reached the daily charging limit for the zones used"
+	},
+	{
+		"Date": "01-Dec-2017",
+		"Start Time": "19:10",
+		"End Time": "19:35",
+		"Journey/Action": "Oxford Circus to Homerton",
+		"Charge": "1.60",
+		"Credit": "",
+		"Balance": "21.35",
+		"Note": ""
+	},
+	{
+		"Date": "01-Dec-2017",
+		"Start Time": "11:29",
+		"End Time": "11:42",
+		"Journey/Action": "Paddington (Bakerloo, Circle/District and H&C) to Oxford Circus",
+		"Charge": "1.60",
+		"Credit": "",
+		"Balance": "22.95",
+		"Note": ""
+	},
+	{
+		"Date": "29-Nov-2017",
+		"Start Time": "18:07",
+		"End Time": "18:15",
+		"Journey/Action": "Oxford Circus to Marylebone [London Underground]",
+		"Charge": "2.40",
+		"Credit": "",
+		"Balance": "24.55",
+		"Note": ""
+	},
+	{
+		"Date": "29-Nov-2017",
+		"Start Time": "10:26",
+		"End Time": "10:38",
+		"Journey/Action": "Marylebone [London Underground] to Oxford Circus",
+		"Charge": "1.60",
+		"Credit": "",
+		"Balance": "26.95",
+		"Note": ""
+	},
+	{
+		"Date": "29-Nov-2017",
+		"Start Time": "10:26",
+		"End Time": "",
+		"Journey/Action": "Auto top-up, Marylebone [London Underground]",
+		"Charge": "",
+		"Credit": "20.00",
+		"Balance": "28.55",
+		"Note": ""
+	}
+]

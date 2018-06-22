@@ -1,0 +1,684 @@
+Return-Path: <sender@domain.com>
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+ by inbound-smtp.eu-west-1.amazonaws.com with SMTP id ppjvjml6b73l1c6r51rhhin7eiasqoo762c0gdg1
+ for recipient@domain.com;
+ Thu, 21 Jun 2018 09:31:24 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of fastmail.com designates 66.111.4.26 as permitted sender) client-ip=66.111.4.26; envelope-from=sender@domain.com; helo=out2-smtp.messagingengine.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of fastmail.com designates 66.111.4.26 as permitted sender) client-ip=66.111.4.26; envelope-from=sender@domain.com; helo=out2-smtp.messagingengine.com;
+ dkim=permerror header.i=@fastmail.com;
+ dkim=permerror header.i=@messagingengine.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFGbE5OL3g2ck16Z1hYbHl2ZmRqektnZ21pYUZJRHlEOWIyZ3dlMjVDdXVybzlJUTJjZ0V4dXJOSFVoR2pXVUxkVVd4dzZlMS80emlGbkpkUEszdUd4ZFZFa1kvaktYUlNHU3diUUFLeGdjQjJqOXRLL05acWNKR083UDdDWTZidU8xcHhMcmZPVTZOaTRZV05VK3pOaHQrV3FwSVBka2xIbjAzcHpEQTlwOG00TXBoaUExZXdWcjZlT2NPdU42ckNQRy9Ud29jaEMrNnJqOEJ4UXpCa0hwRTNjTXN3M1pxbnpqN1gwZGZMeDdpR1gzODVvRzZCY2cvUThubzVWZG5sQ1lRRndwQXZJVXliZ29Sdnp4K2NmaDMrQnBLb0xPdkJ3djE3S3JnTEdkSFhBRFNQdWZEaVNremNGSCtJM3FDaHc9
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=mBZ0LSKR0e9l8bGuOB5Qag6WYYSnMM0c71jAqxuPfjdlTrYtzqDOP3W1OW3UDzC9wQp8xnxGmTvwh0VD8ZWTuSMaIPnvJmFlkYukiyIP4vCzZaM7V5/KwiHuRXrRsyH7fy+u80IOdPFuRQY8cnqFHpSxQ0exPWcWjJNuHVuGThI=; c=relaxed/simple; s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1529573485; v=1; bh=ttoRnVykQUi444h/D6hnEWzZCCvSw8iwKmgZqxrIZ70=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.nyi.internal (Postfix) with ESMTP id E4DC621CE3
+	for <recipient@domain.com>; Thu, 21 Jun 2018 05:31:22 -0400 (EDT)
+Received: from web4 ([10.202.2.214])
+  by compute4.internal (MEProxy); Thu, 21 Jun 2018 05:31:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; bh=+qrBk0L6b6mQIzieUpQc5UA3PmjL32YZ6bQbpXDIMwA=; b=kkTrB8eP
+	1d+097TxhTu1TsMSRgRk6i69u9PAqFWk6Xq8nSZnnGNNIcMPltrsdE57rT8GX6pL
+	N0BZAdkWI79e+8fJhln+hdRaxncQrA3Ys0pdP7eHd7URvLkYDIgq/aJlhInWa3jC
+	67H0BYHFusOUoFgxj/Oo4QxTyqpAafT+KkbOEVesrteZMkhhsnU72TtIkWXyOFq1
+	/lgtKVm1jJpaN0Tla1034Ouf8l2fNgnyv5tm2Sj7nxTMN5xDkUo2I3J3q9PyFw0F
+	NX41uzvzg3AYROHBUb5qLF55FG9UtEwRlhQOJgD6aEz77fd9Yws0KyPVrPCbjGuK
+	1+jnrFNdU0xYlw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=content-transfer-encoding:content-type
+	:date:from:message-id:mime-version:subject:to:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; bh=+qrBk0L6b6mQIzieUpQc5UA3PmjL3
+	2YZ6bQbpXDIMwA=; b=BJALMSfc1noR57AitKRCjRj0smo621FSojSidGC3VnHpV
+	QNpdYfU1lagpwwSO9UkK8GvuMd3FqubZ0MX2pOYDZLoCLnZSvfMKX/FNFqt+dCf7
+	HuT+M93It0Oy/eOiygWQxZt7Hine62e2oE2SCkit3jpIojAkl8h4Po9+gQwsqUK9
+	jnP2xiJJv6oV74fz4Iff2ciNlukTwJhayBOE5E3SXfcCXnCoJtpF6d449aBptaS5
+	DcepAoIZH6qqdW81ZaMopvfWCCaneKyLv0siCAS3fJ2OUf0vbYaFSBK9Bje5uKv2
+	gZhA1KWZVX0S52dQdGwip9BM0oFCUTh6S5Yf0HpWw==
+X-ME-Proxy: <xmx:anArWzCIsbtwMHX8KCd1oOfQkkPfl8pIkHBSzpvqvU8E1NtFdiubNw>
+    <xmx:anArW8j3SZr-sUu1xCMwfR3vVlOlNqOzkEMxjZx6eqg7EnNnBJaJZw>
+    <xmx:anArWzV27sxzTROggTze2-G0N3XVkVoYL_j9lSWq-D5PufP92-5Mzw>
+    <xmx:anArW5rcj6ofHOOzx13mm2OSGV6D6IJOkDnxrbvHQZ3c279ewHY_kw>
+    <xmx:anArW9v6uDwBCH0Kn4-j6_fkGtDzn4XYVT1Pv0P5s3oEMBxO01U7bA>
+    <xmx:anArW_q2jKE0s-umj-cd9X1yI5456MPl4lTIgxrMuOK969_Bf6OBwQ>
+X-ME-Sender: <xms:anArWzFi8rHXFw8p-dMfSndqXNTzYIB2g-etHOekkhQxsB6qOGj3aQ>
+Received: by mailuser.nyi.internal (Postfix, from userid 99)
+	id 948E6BA43D; Thu, 21 Jun 2018 05:31:22 -0400 (EDT)
+Message-Id: <1529573482.4115558.1415510000.15C6F44A@webmail.messagingengine.com>
+From: Alex Norton <sender@domain.com>
+To: recipient@domain.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="_----------=_152957348241155582"
+X-Mailer: MessagingEngine.com Webmail Interface - ajax-0d8ea36c
+X-Forwarded-Message-Id: <989251404.68171.1529430604299.JavaMail.ossrun@672755-bus04.Oyster.tfl.gov.uk>
+Subject: Fwd: Oyster Journey History Statement
+Date: Thu, 21 Jun 2018 10:31:22 +0100
+
+This is a multi-part message in MIME format.
+
+--_----------=_152957348241155582
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative; boundary="_----------=_152957348241155581"
+
+This is a multi-part message in MIME format.
+
+--_----------=_152957348241155581
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+
+
+
+
+----- Original message -----
+From: autoresponse@tfl.gov.uk
+To: sender@domain.com
+Subject: Oyster Journey History Statement
+Date: Tue, 19 Jun 2018 18:50:04 +0100 (BST)
+
+
+Home[1] Plan journey[2] Status update[3] Maps[4]
+
+
+Transport for London_________________
+
+
+Oyster email update____________________Dear Mr Norton,
+
+
+Your weekly Journey History statement from Transport for London
+is attached.
+If you no longer wish to receive journey history statements by email you
+can cancel this service within your Oyster online account by selecting
+the Oyster card and clicking 'Change card preferences'.
+If your attachment is in a PDF format you may need Adobe Acrobat Reader
+to read it.
+If you require Adobe Acrobat Reader this is available at no cost from
+the Adobe Website: www.adobe.com.
+
+
+
+Kind regards,
+Volkan Altinok
+Volkan Altinok
+ Head of Contact Centre Operations
+ Customer Experience
+
+
+
+If you have any questions or comments, please call us on 0343 222 1234
+(08:00 to 20:00 daily) or visit our *_website_*[5].
+
+
+
+Mayor of London - Every Journey Matters
+
+
+Email sign up[6] Social Media[7] Fares & Payments[8] Oyster[9]Copyright in =
+the contents of this email and its attachments belongs to
+Transport for London. Any unauthorised usage will infringe that copyright. =
+=C2=A9 Transport
+ for London=20
+
+Links:
+
+  1. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8I9
+  2. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ia
+  3. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ib
+  4. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ic
+  5. https://tfl.gov.uk/help-and-contact/contact-us-about-oyster
+  6. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ih
+  7. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ii
+  8. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ij
+  9. http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ik
+
+--_----------=_152957348241155581
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/related; boundary="_----------=_152957348241155580"
+
+This is a multi-part message in MIME format.
+
+--_----------=_152957348241155580
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style type=3D"text/css">p.MsoNormal,p.MsoNoSpacing{margin:0}</style>
+</head>
+<body><div><br></div>
+<div style=3D"text-size-adjust: none;"><br></div>
+<div style=3D"text-size-adjust: none;"><br></div>
+<div style=3D"text-size-adjust: none;">----- Original message -----<br></di=
+v>
+<div style=3D"text-size-adjust: none;">From: <a style=3D"text-size-adjust: =
+none;" href=3D"mailto:autoresponse@tfl.gov.uk">autoresponse@tfl.gov.uk</a><=
+br></div>
+<div style=3D"text-size-adjust: none;">To: <a style=3D"text-size-adjust: no=
+ne;" href=3D"mailto:sender@domain.com">sender@domain.com</a><br=
+></div>
+<div style=3D"text-size-adjust: none;">Subject: Oyster Journey History Stat=
+ement<br></div>
+<div style=3D"text-size-adjust: none;">Date: Tue, 19 Jun 2018 18:50:04 +010=
+0 (BST)<br></div>
+<div style=3D"text-size-adjust: none;"><br></div>
+<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" bgco=
+lor=3D"#eef6ff"><tbody><tr><td style=3D"border-collapse: collapse; text-siz=
+e-adjust: none;" bgcolor=3D"#eef6ff"><table width=3D"100%" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0" align=3D"center" style=3D"display:block;ma=
+x-width:600px !important;"><tbody><tr><td style=3D"border-collapse: collaps=
+e; text-size-adjust: none;" bgcolor=3D"#eef6ff"><table border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" style=3D"width:98%;max-width:600px !important;=
+" align=3D"center" bgcolor=3D"#eef6ff"><tbody><tr><td style=3D"border-colla=
+pse: collapse; text-size-adjust: none;" bgcolor=3D"#eef6ff" valign=3D"top">=
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bgco=
+lor=3D"#333333"><tbody><tr><td width=3D"100%" height=3D"5" style=3D"line-he=
+ight: 5px; font-size: 5px; border-collapse: collapse; text-size-adjust: non=
+e;"><br></td></tr><tr><td style=3D"padding: 0px 5px; border-collapse: colla=
+pse; text-size-adjust: none;" bgcolor=3D"#333333"><table border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0" width=3D"100%"><tbody><tr><td width=3D"148" =
+height=3D"20" align=3D"center" valign=3D"middle" style=3D"line-height: 18px=
+; font-family: Arial, Helvetica, sans-serif; color: rgb(204, 204, 204); fon=
+t-size: 14px; text-decoration: none; text-align: center; border-collapse: c=
+ollapse; text-size-adjust: none;"><a name=3D"header_home" href=3D"http://in=
+fo.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8I9" style=3D"line-height: 18px; font-f=
+amily: Arial, Helvetica, sans-serif; color: rgb(255, 255, 255); font-size: =
+13px; text-decoration: none; text-size-adjust: none;">Home</a><br></td><td =
+width=3D"148" height=3D"20" align=3D"center" valign=3D"middle" style=3D"lin=
+e-height: 18px; font-family: Arial, Helvetica, sans-serif; color: rgb(204, =
+204, 204); font-size: 14px; text-decoration: none; text-align: center; bord=
+er-collapse: collapse; text-size-adjust: none;"><a name=3D"header_plan_jour=
+ney" href=3D"http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ia" style=3D"lin=
+e-height: 18px; font-family: Arial, Helvetica, sans-serif; color: rgb(255, =
+255, 255); font-size: 13px; text-decoration: none; text-size-adjust: none;"=
+>Plan journey</a><br></td><td width=3D"148" height=3D"20" align=3D"center" =
+valign=3D"middle" style=3D"line-height: 18px; font-family: Arial, Helvetica=
+, sans-serif; color: rgb(204, 204, 204); font-size: 14px; text-decoration: =
+none; text-align: center; border-collapse: collapse; text-size-adjust: none=
+;"><a name=3D"header_status_update" href=3D"http://info.tfl.gov.uk/re?l=3DD=
+I9xq1vgI2v8epg8Ib" style=3D"line-height: 18px; font-family: Arial, Helvetic=
+a, sans-serif; color: rgb(255, 255, 255); font-size: 13px; text-decoration:=
+ none; text-size-adjust: none;">Status update</a><br></td><td width=3D"148"=
+ height=3D"20" align=3D"center" valign=3D"middle" style=3D"line-height: 18p=
+x; font-family: Arial, Helvetica, sans-serif; color: rgb(204, 204, 204); fo=
+nt-size: 14px; text-decoration: none; text-align: center; border-collapse: =
+collapse; text-size-adjust: none;"><a name=3D"header_maps" href=3D"http://i=
+nfo.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ic" style=3D"line-height: 18px; font-=
+family: Arial, Helvetica, sans-serif; color: rgb(255, 255, 255); font-size:=
+ 13px; text-decoration: none; text-size-adjust: none;">Maps</a><br></td></t=
+r></tbody></table></td></tr><tr><td width=3D"100%" height=3D"5" style=3D"li=
+ne-height: 5px; font-size: 5px; border-collapse: collapse; text-size-adjust=
+: none;"><br></td></tr></tbody></table><table border=3D"0" cellspacing=3D"0=
+" cellpadding=3D"0" bgcolor=3D"#333333" width=3D"100%"><tbody><tr><td bgcol=
+or=3D"#2d3039" style=3D"font-size: 1px; line-height: 1px; border-collapse: =
+collapse; text-size-adjust: none;"><a style=3D"text-size-adjust: none;" hre=
+f=3D"#menu"><img src=3D"https://www.fastmailusercontent.com/proxy/db1cee1bd=
+f035258a7b4b01c963d64b90452f13a040dad6c80612e638205b310/86474707a3f2f296e66=
+6f6e24766c6e276f667e257b6f296d6760727f68797f296d676f2634363638363435323f2f4=
+47865627f5350716365627e2769666/Other_Spacer.gif" width=3D"1" height=3D"1" s=
+tyle=3D"display:block;" border=3D"0" alt=3D""></a><br></td></tr></tbody></t=
+able><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"=
+><tbody><tr><td style=3D"border-collapse: collapse; text-size-adjust: none;=
+" align=3D"center" width=3D"100%" bgcolor=3D"#ffffff"><a style=3D"text-size=
+-adjust: none;" name=3D"header_main" href=3D"http://info.tfl.gov.uk/re?l=3D=
+DI9xq1vgI2v8epg8Id"><img border=3D"0" src=3D"https://www.fastmailuserconten=
+t.com/proxy/a4c3d9763afd3bc87a2eb0463b23c130174fa959e2116dc3efbc7d1d1c0a4a2=
+b/86474707a3f2f296e666f6e24766c6e276f667e257b6f296d6760727f68797f296d676f26=
+34373431343239323f2845616465627f5f49737475627e2769666/Header_Oyster.gif" wi=
+dth=3D"100%" style=3D"display:block;max-width:600px !important;max-height:1=
+20px !important;" alt=3D"Transport for London_________________"></a><br></t=
+d></tr></tbody></table><table width=3D"100%" cellspacing=3D"0" cellpadding=
+=3D"0" bgcolor=3D"#ffffff" style=3D"border-top-width:1px;border-right-width=
+:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:solid;b=
+order-right-style:solid;border-bottom-style:solid;border-left-style:solid;b=
+order-top-color:rgb(204, 204, 204);border-right-color:rgb(204, 204, 204);bo=
+rder-bottom-color:rgb(204, 204, 204);border-left-color:rgb(204, 204, 204);b=
+order-image-source:initial;border-image-slice:initial;border-image-width:in=
+itial;border-image-outset:initial;border-image-repeat:initial;margin-top:0p=
+x;margin-right:auto;margin-bottom:0px;margin-left:auto;padding-top:0px;padd=
+ing-right:0px;padding-bottom:0px;padding-left:0px;"><tbody><tr><td style=3D=
+"border-collapse: collapse; text-size-adjust: none;" bgcolor=3D"#ffffff" wi=
+dth=3D"100%"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0"><tbody><tr><td width=3D"100%" height=3D"6" bgcolor=3D"#ffffff" sty=
+le=3D"line-height: 6px; font-size: 6px; border-collapse: collapse; text-siz=
+e-adjust: none;"><br></td></tr></tbody></table></td></tr><tr><td style=3D"b=
+order-collapse: collapse; text-size-adjust: none;" bgcolor=3D"#ffffff" widt=
+h=3D"100%"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0"><tbody><tr><td style=3D"border-collapse: collapse; text-size-adjust:=
+ none;" width=3D"2%" bgcolor=3D"#ffffff"><br></td><td style=3D"border-colla=
+pse: collapse; text-size-adjust: none;" align=3D"center" width=3D"96%" bgco=
+lor=3D"#ffffff"><a style=3D"text-size-adjust: none;" name=3D"title_main" hr=
+ef=3D"http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ie"><img border=3D"0" s=
+rc=3D"https://www.fastmailusercontent.com/proxy/46035818902fceb6855d9363932=
+a35f412813c916af9e152247b2a9b5384e19e/86474707a3f2f296e666f6e24766c6e276f66=
+7e257b6f296d6760727f68797f296d676f2635303036323936323f2459647c656f5f4973747=
+5627e2769666/Title_Oyster.gif" width=3D"100%" style=3D"display:block;max-wi=
+dth:576px !important;max-height:60px !important;" alt=3D"Oyster email updat=
+e____________________"></a><br></td><td style=3D"border-collapse: collapse;=
+ text-size-adjust: none;" width=3D"2%" bgcolor=3D"#ffffff"><br></td></tr></=
+tbody></table></td></tr><tr><td style=3D"border-collapse: collapse; text-si=
+ze-adjust: none;" bgcolor=3D"#ffffff" width=3D"100%"><table width=3D"100%" =
+border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td width=3D"10=
+0%" height=3D"6" bgcolor=3D"#ffffff" style=3D"line-height: 6px; font-size: =
+6px; border-collapse: collapse; text-size-adjust: none;"><br></td></tr></tb=
+ody></table></td></tr></tbody></table><table width=3D"100%" cellspacing=3D"=
+0" cellpadding=3D"0" bgcolor=3D"#ffffff" style=3D"border-right-width:1px;bo=
+rder-right-style:solid;border-right-color:rgb(204, 204, 204);border-left-wi=
+dth:1px;border-left-style:solid;border-left-color:rgb(204, 204, 204);margin=
+-top:0px;margin-right:auto;margin-bottom:0px;margin-left:auto;padding-top:0=
+px;padding-right:0px;padding-bottom:0px;padding-left:0px;"><tbody><tr><td s=
+tyle=3D"border-collapse: collapse; text-size-adjust: none;" bgcolor=3D"#fff=
+fff"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"=
+><tbody><tr><td width=3D"100%" height=3D"12" style=3D"line-height: 12px; fo=
+nt-size: 12px; border-collapse: collapse; text-size-adjust: none;"><br></td=
+></tr></tbody></table><table width=3D"100%" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0"><tbody><tr><td style=3D"border-collapse: collapse; text-s=
+ize-adjust: none;" width=3D"2%" bgcolor=3D"#ffffff"><br></td><td width=3D"9=
+6%" bgcolor=3D"#ffffff" style=3D"font-family: Arial, Helvetica, sans-serif;=
+ color: rgb(45, 48, 57); font-size: 12px; line-height: 14px; text-align: le=
+ft; border-collapse: collapse; text-size-adjust: none;"><div>Dear Mr Norton=
+,<br></div>
+<div><br></div>
+<div> <br></div>
+<div>Your weekly Journey History statement from Transport for London is att=
+ached. <br></div>
+<div> <br></div>
+<div>If you no longer wish to receive journey history statements by email y=
+ou can cancel this service within your Oyster online account by selecting t=
+he Oyster card and clicking 'Change card preferences'. <br></div>
+<div> <br></div>
+<div>If your attachment is in a PDF format you may need Adobe Acrobat Reade=
+r to read it. <br></div>
+<div> <br></div>
+<div>If you require Adobe Acrobat Reader this is available at no cost from =
+the Adobe Website: www.adobe.com. <br></div>
+<div> <br></div>
+</td><td style=3D"border-collapse: collapse; text-size-adjust: none;" width=
+=3D"2%" bgcolor=3D"#ffffff"><br></td></tr></tbody></table><table width=3D"1=
+00%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td width=
+=3D"100%" height=3D"12" style=3D"line-height: 12px; font-size: 12px; border=
+-collapse: collapse; text-size-adjust: none;"><br></td></tr></tbody></table=
+><table align=3D"center" width=3D"100%" border=3D"0" cellspacing=3D"0" cell=
+padding=3D"0"><tbody><tr><td style=3D"border-collapse: collapse; text-size-=
+adjust: none;" width=3D"2%"><br></td><td align=3D"center" width=3D"96%" sty=
+le=3D"text-align: left; border-collapse: collapse; text-size-adjust: none;"=
+><table align=3D"left" width=3D"100%" border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0" style=3D"font-family:Arial, Helvetica, sans-serif;color:rgb(45,=
+ 48, 57);font-size:12px;line-height:14px;text-align:left;"><tbody><tr><td s=
+tyle=3D"font-family: Arial, Helvetica, sans-serif; color: rgb(45, 48, 57); =
+font-size: 12px; line-height: 16px; text-align: left; border-collapse: coll=
+apse; text-size-adjust: none;">Kind regards,<br></td></tr><tr><td style=3D"=
+border-collapse: collapse; text-size-adjust: none;" width=3D"100%"><img src=
+=3D"cid:email_signature_jpg" style=3D"display:block;color:rgb(255, 0, 255);=
+" border=3D"0" alt=3D"Volkan Altinok" title=3D"Signature"><br></td></tr><tr=
+><td style=3D"font-family: Arial, Helvetica, sans-serif; color: rgb(45, 48,=
+ 57); font-size: 12px; line-height: 14px; text-align: left; border-collapse=
+: collapse; text-size-adjust: none;"><div>Volkan Altinok<br></div>
+<div> Head of Contact Centre Operations<br></div>
+<div> Customer Experience<br></div>
+</td></tr></tbody></table></td><td style=3D"border-collapse: collapse; text=
+-size-adjust: none;" width=3D"2%"><br></td></tr></tbody></table><table widt=
+h=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td =
+width=3D"100%" height=3D"12" style=3D"line-height: 12px; font-size: 12px; b=
+order-collapse: collapse; text-size-adjust: none;"><br></td></tr></tbody></=
+table></td></tr></tbody></table><table width=3D"100%" cellspacing=3D"0" cel=
+lpadding=3D"0" bgcolor=3D"#ffffff" style=3D"border-right-width:1px;border-r=
+ight-style:solid;border-right-color:rgb(204, 204, 204);border-left-width:1p=
+x;border-left-style:solid;border-left-color:rgb(204, 204, 204);margin-top:0=
+px;margin-right:auto;margin-bottom:0px;margin-left:auto;padding-top:0px;pad=
+ding-right:0px;padding-bottom:0px;padding-left:0px;"><tbody><tr><td style=
+=3D"border-collapse: collapse; text-size-adjust: none;" bgcolor=3D"#ffffff"=
+><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tb=
+ody><tr><td style=3D"border-collapse: collapse; text-size-adjust: none;" wi=
+dth=3D"2%"><br></td><td width=3D"96%" style=3D"font-family: Arial, Helvetic=
+a, sans-serif; color: rgb(45, 48, 57); font-size: 12px; line-height: 16px; =
+text-align: left; border-collapse: collapse; text-size-adjust: none;">If yo=
+u have any questions or comments, please call us on 0343 222 1234 (08:00 to=
+ 20:00 daily) or visit our <a name=3D"body_unsubscribe" href=3D"https://tfl=
+.gov.uk/help-and-contact/contact-us-about-oyster" style=3D"line-height: 16p=
+x; font-family: Arial, Helvetica, sans-serif; color: rgb(26, 90, 146); font=
+-size: 12px; text-decoration: none; text-size-adjust: none;"><span><b><u>we=
+bsite</u></b></span></a>.<br></td><td style=3D"border-collapse: collapse; t=
+ext-size-adjust: none;" width=3D"2%"><br></td></tr></tbody></table><table w=
+idth=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><=
+td width=3D"100%" height=3D"12" style=3D"line-height: 12px; font-size: 12px=
+; border-collapse: collapse; text-size-adjust: none;"><br></td></tr></tbody=
+></table></td></tr></tbody></table><table width=3D"100%" cellspacing=3D"0" =
+cellpadding=3D"0" bgcolor=3D"#ffffff" style=3D"border-top-width:1px;border-=
+right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-st=
+yle:solid;border-right-style:solid;border-bottom-style:solid;border-left-st=
+yle:solid;border-top-color:rgb(204, 204, 204);border-right-color:rgb(204, 2=
+04, 204);border-bottom-color:rgb(204, 204, 204);border-left-color:rgb(204, =
+204, 204);border-image-source:initial;border-image-slice:initial;border-ima=
+ge-width:initial;border-image-outset:initial;border-image-repeat:initial;ma=
+rgin-top:0px;margin-right:auto;margin-bottom:0px;margin-left:auto;padding-t=
+op:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;"><tbody><tr><=
+td style=3D"border-collapse: collapse; text-size-adjust: none;" bgcolor=3D"=
+#ffffff" width=3D"100%"><table width=3D"100%" border=3D"0" cellspacing=3D"0=
+" cellpadding=3D"0"><tbody><tr><td width=3D"100%" height=3D"6" style=3D"lin=
+e-height: 6px; font-size: 6px; border-collapse: collapse; text-size-adjust:=
+ none;"><br></td></tr></tbody></table></td></tr><tr><td style=3D"border-col=
+lapse: collapse; text-size-adjust: none;" bgcolor=3D"#ffffff" width=3D"100%=
+"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><t=
+body><tr><td style=3D"border-collapse: collapse; text-size-adjust: none;" a=
+lign=3D"center" width=3D"98%"><a style=3D"text-size-adjust: none;" name=3D"=
+ejm_footer" href=3D"http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ig"><img =
+border=3D"0" src=3D"https://www.fastmailusercontent.com/proxy/419f198e12807=
+987dea5e9c08ea90b41c01788cc2959b38b9811423ba727557f/86474707a3f2f296e666f6e=
+24766c6e276f667e257b6f296d6760727f68797f296d676f2634373930383931343f264f6f6=
+475627f5d41697f627f554a4d4e2769666/Footer_Mayor_EJM.gif" width=3D"98%" styl=
+e=3D"display:block;font-family:Arial, Helvetica, sans-serif;color:rgb(45, 4=
+8, 57);font-size:14px;line-height:18px;text-align:left;max-width:598px !imp=
+ortant;max-height:60px !important;" alt=3D"Mayor of London - Every Journey =
+Matters"></a><br></td></tr></tbody></table></td></tr><tr><td style=3D"borde=
+r-collapse: collapse; text-size-adjust: none;" bgcolor=3D"#ffffff" width=3D=
+"100%"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0"><tbody><tr><td width=3D"100%" height=3D"6" style=3D"line-height: 6px; fo=
+nt-size: 6px; border-collapse: collapse; text-size-adjust: none;"><br></td>=
+</tr></tbody></table></td></tr></tbody></table><table border=3D"0" cellspac=
+ing=3D"0" cellpadding=3D"0" width=3D"100%" bgcolor=3D"#333333"><tbody><tr><=
+td width=3D"100%" height=3D"5" style=3D"line-height: 5px; font-size: 5px; b=
+order-collapse: collapse; text-size-adjust: none;"><a style=3D"text-size-ad=
+just: none;" name=3D"menu"></a><br></td></tr><tr><td width=3D"100%" style=
+=3D"padding: 0px; border-collapse: collapse; text-size-adjust: none;" bgcol=
+or=3D"#333333"><table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" widt=
+h=3D"100%"><tbody><tr><td width=3D"148" height=3D"20" align=3D"center" vali=
+gn=3D"middle" style=3D"line-height: 18px; font-family: Arial, Helvetica, sa=
+ns-serif; color: rgb(255, 255, 255); font-size: 14px; text-decoration: none=
+; text-align: center; border-collapse: collapse; text-size-adjust: none;"><=
+a name=3D"footer_email_sign_up" href=3D"http://info.tfl.gov.uk/re?l=3DDI9xq=
+1vgI2v8epg8Ih" style=3D"line-height: 18px; font-family: Arial, Helvetica, s=
+ans-serif; color: rgb(255, 255, 255); font-size: 13px; text-decoration: non=
+e; text-size-adjust: none;"><span>Email sign up</span></a><br></td><td widt=
+h=3D"148" height=3D"20" align=3D"center" valign=3D"middle" style=3D"line-he=
+ight: 18px; font-family: Arial, Helvetica, sans-serif; color: rgb(255, 255,=
+ 255); font-size: 14px; text-decoration: none; text-align: center; border-c=
+ollapse: collapse; text-size-adjust: none;"><a name=3D"footer_social_media"=
+ href=3D"http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ii" style=3D"line-he=
+ight: 18px; font-family: Arial, Helvetica, sans-serif; color: rgb(255, 255,=
+ 255); font-size: 13px; text-decoration: none; text-size-adjust: none;"><sp=
+an>Social Media</span></a><br></td><td width=3D"148" height=3D"20" align=3D=
+"center" valign=3D"middle" style=3D"line-height: 18px; font-family: Arial, =
+Helvetica, sans-serif; color: rgb(255, 255, 255); font-size: 14px; text-dec=
+oration: none; text-align: center; border-collapse: collapse; text-size-adj=
+ust: none;"><a name=3D"footer_fares_payments" href=3D"http://info.tfl.gov.u=
+k/re?l=3DDI9xq1vgI2v8epg8Ij" style=3D"line-height: 18px; font-family: Arial=
+, Helvetica, sans-serif; color: rgb(255, 255, 255); font-size: 13px; text-d=
+ecoration: none; text-size-adjust: none;"><span>Fares &amp; Payments</span>=
+</a><br></td><td width=3D"148" height=3D"20" align=3D"center" valign=3D"mid=
+dle" style=3D"line-height: 18px; font-family: Arial, Helvetica, sans-serif;=
+ color: rgb(255, 255, 255); font-size: 14px; text-decoration: none; text-al=
+ign: center; border-collapse: collapse; text-size-adjust: none;"><a name=3D=
+"footer_oyster" href=3D"http://info.tfl.gov.uk/re?l=3DDI9xq1vgI2v8epg8Ik" s=
+tyle=3D"line-height: 18px; font-family: Arial, Helvetica, sans-serif; color=
+: rgb(255, 255, 255); font-size: 13px; text-decoration: none; text-size-adj=
+ust: none;"><span>Oyster</span></a><br></td></tr></tbody></table></td></tr>=
+<tr><td width=3D"100%" height=3D"5" style=3D"line-height: 5px; font-size: 5=
+px; border-collapse: collapse; text-size-adjust: none;"><br></td></tr></tbo=
+dy></table><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" bgcolor=3D"#eef6ff"><tbody><tr><td width=3D"100%" height=3D"5" style=
+=3D"line-height: 5px; border-collapse: collapse; text-size-adjust: none;"><=
+br></td></tr><tr><td style=3D"font-family: Arial, Helvetica, sans-serif; co=
+lor: rgb(45, 48, 57); font-size: 11px; line-height: 15px; text-align: left;=
+ border-collapse: collapse; text-size-adjust: none;"><div>Copyright in the =
+contents of this email and its attachments belongs to Transport for London.=
+<br></div>
+<div> Any unauthorised usage will infringe that copyright. =C2=A9 Transport=
+ for London<br></div>
+</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le></td></tr></tbody></table><div><img src=3D"https://www.fastmailuserconte=
+nt.com/proxy/cb9815815a8fd25d03a8572719c4b4f2a35d51f8352b518dc9e2b73297b1e9=
+dc/86474707a3f2f296e666f6e24766c6e276f667e257b6f24727f207e2769666f3579646d3=
+6323432313339323234362d69646d363030383338333936362d63746d313430303233313730=
+333031383623747d3/p.gif" width=3D"1" height=3D"1"><br></div>
+</body>
+</html>
+
+--_----------=_152957348241155580
+Content-Disposition: attachment; filename="Attachment1.5"
+Content-Id: <email_signature_jpg>
+Content-Transfer-Encoding: base64
+Content-Type: image/jpeg; name="Attachment1.5"
+
+/9j/4AAQSkZJRgABAQEAYABgAAD/4QNSRXhpZgAATU0AKgAAAAgABVEAAAQA
+AAABAAAAAFEBAAMAAAABAAEAAFECAAEAAAMAAAAASlEDAAEAAAABAAAAAFEE
+AAEAAAAB/AAAAAAAAAAAAAAAADMAAGYAAJkAAMwAAP8AKwAAKzMAK2YAK5kA
+K8wAK/8AVQAAVTMAVWYAVZkAVcwAVf8AgAAAgDMAgGYAgJkAgMwAgP8AqgAA
+qjMAqmYAqpkAqswAqv8A1QAA1TMA1WYA1ZkA1cwA1f8A/wAA/zMA/2YA/5kA
+/8wA//8zAAAzADMzAGYzAJkzAMwzAP8zKwAzKzMzK2YzK5kzK8wzK/8zVQAz
+VTMzVWYzVZkzVcwzVf8zgAAzgDMzgGYzgJkzgMwzgP8zqgAzqjMzqmYzqpkz
+qswzqv8z1QAz1TMz1WYz1Zkz1cwz1f8z/wAz/zMz/2Yz/5kz/8wz//9mAABm
+ADNmAGZmAJlmAMxmAP9mKwBmKzNmK2ZmK5lmK8xmK/9mVQBmVTNmVWZmVZlm
+VcxmVf9mgABmgDNmgGZmgJlmgMxmgP9mqgBmqjNmqmZmqplmqsxmqv9m1QBm
+1TNm1WZm1Zlm1cxm1f9m/wBm/zNm/2Zm/5lm/8xm//+ZAACZADOZAGaZAJmZ
+AMyZAP+ZKwCZKzOZK2aZK5mZK8yZK/+ZVQCZVTOZVWaZVZmZVcyZVf+ZgACZ
+gDOZgGaZgJmZgMyZgP+ZqgCZqjOZqmaZqpmZqsyZqv+Z1QCZ1TOZ1WaZ1ZmZ
+1cyZ1f+Z/wCZ/zOZ/2aZ/5mZ/8yZ///MAADMADPMAGbMAJnMAMzMAP/MKwDM
+KzPMK2bMK5nMK8zMK//MVQDMVTPMVWbMVZnMVczMVf/MgADMgDPMgGbMgJnM
+gMzMgP/MqgDMqjPMqmbMqpnMqszMqv/M1QDM1TPM1WbM1ZnM1czM1f/M/wDM
+/zPM/2bM/5nM/8zM////AAD/ADP/AGb/AJn/AMz/AP//KwD/KzP/K2b/K5n/
+K8z/K///VQD/VTP/VWb/VZn/Vcz/Vf//gAD/gDP/gGb/gJn/gMz/gP//qgD/
+qjP/qmb/qpn/qsz/qv//1QD/1TP/1Wb/1Zn/1cz/1f///wD//zP//2b//5n/
+/8z///8AAAAAAAAAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYE
+BAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBD
+AQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM
+DAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCABBAGkDASIAAhEBAxEB/8QAHwAA
+AQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcY
+GRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4
+eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJ
+ytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEB
+AQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEE
+BSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygp
+KjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaH
+iImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX
+2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9/KKKKACisnw5
+450rxbq2vWOnXi3N14Zv10zU4wjL9luGtoLoRkkAMfJuYHyuR8+M5BA1qACi
+iigAooooA4nx18X5fCXxg8D+E7fR5NQPiyS8N3eC4EaaTDBbPKHK4LO0kgSM
+D5VALksCFR+2r53+C0958Uv+Cg3xi8RTb/7I+HdjpngbTir5jmuJbeLVLw46
+bkF1arnrywPSvoiqlboVJWCiiipJCiiigAqO6uo7G2kmmkjhhhUvJI7BVRQM
+kkngADnJqSvMP2yVGpfs5+INDaRoV8ZPaeE2kUsGiXVLuHTmdSpBBVbksCDx
+tz2oWrGtXYP2PdNz8BdK1+W3e2v/AB3JN4uvElj2TRyahI10sUmed0MUkUAz
+khYFHQCvT6bFEsESxxqqIgCqqjAUDoAKdTbu7hJ3dwooopCCkZgiljwBySe1
+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
+FFFAH//Z
+
+--_----------=_152957348241155580--
+
+
+--_----------=_152957348241155581--
+
+
+--_----------=_152957348241155582
+Content-Disposition: attachment; filename="Attachment1.2"
+Content-Id: <email_oyster_logo_gif>
+Content-Transfer-Encoding: base64
+Content-Type: image/gif; name="Attachment1.2"
+
+R0lGODlheQAnALMAAKzG3Ze00fb5+xNSlWWOusDW5y5moQKs71HQ/OPr8tXg
+7El6rXufxO7y9wBFjf///yH5BAAAAAAALAAAAAB5ACcAAAT/8MlJq7046827
+/2AojmRpnqglBINjAGkszxnr3INC7zxK3MBAb0j8/IAOYXHJrByDzZGgkShY
+FQ0BRpBIaDPcrKqhsBYUCfFk+rwFGupx+RpXdb8Pbhqvx1O4AQsDLYMGBAV+
+DwkEBgMEOhcNjAYMDWsFDI0OhAYLb3kABAsGSC6iDAkVDQWMhIWHiQ8NmY46
+rI0GnwIMowwWDQGkpUiPa20EsQ9tvrI2w0AEDQAtz0iVEwptwwOofwzEAMJA
+MOGjBqrf1UgGBRIF4pvtFQXUN+e76kADAOn5LqkPwvm7scCSBAULkAwaJiSA
+qAULvA0Ewu7Bu1IMEvWz90DBxH0B/yYuSKWg3kBkB+E922dxAQFGFACsHGSS
+YBZtBiBJSKDSl7YBEBsRWoBG0EKFhQBMUbmpkyaF8hQw1ZfrCz8CMCQIUMkN
+QAF+CUsJmVZK6YSQCr3AGxBAwJQCDhlAWgUgLDQAAACiRbKggBcFzqAdtKsQ
+q8EMMtd5RcAYAaZSBRsQdlBQq0oCEtZm3bDRwWZZlxORpWhJ6rAXHtrsQ3Cg
+dWvHqtsFjidhNBB5kyn5TSZBm5LaJnN0Gd4FXs6OKit6gNfXtXMEtpMompxR
+GeQvexUuYOD3gm8Ks4FCHB9UIQyEpVB6MBmAtXPXda1J6DygS83NktU5Mkvh
++4TOE21ynv9Kv3VQz2rvwUcYM6YhwY9JBhzW0WSlsOWHf/PV9FE7DeLwGQfs
+ufcedAv+BxmBiSRAizoFYvgAgAM5UhphbIEAzyEJHgAdexNcpB9AFiTg0FN8
+AenibJQwoOSSTDIQAEAdCgiCagCI+Foo68iThzYY8aYVXIKYN4FveERngJcW
+RFnjB4lR9FVj0HU2UkwaAqHTBAlgUUECNG7WWTQTNHAZkBTkSSh6+ny4gaCl
+UBLAo4FUWGAeFN6g3gR1QRSAX3AU0OdZjRIK4AIAYEEFJqP0hc1ak3LQ5joG
+EAnEnBXMNk4FJa0zXnI6CWQNHlHiQB5zX6ip6Ab4BKicKhRGWMHEq/5cmp9C
+bWFaZzUDGGSsCJJMhBoGtlZLAT0iERpQTbRKYKs6zEwnpggrTIVDMTVAaG4e
+wUR7pwTAQGaup/5wA2SylkoYAmBG4WAIAAbvOVmrPfIi1CYDLHyvVoEkFUsC
+oTxVyHYFGKxirIecwEUZXp2BZm+hasCFFXjRwcEcCnhJBsxXeLGFAnpGAV5N
+EPsstMkMoNvw0EiPgFBNA2iZ9NMiIEot1FSLEJ0bK1et9armZb311gKEU7Fc
+X5dt9tlop81BBAA7
+
+--_----------=_152957348241155582
+Content-Disposition: attachment; filename="Attachment1.3"
+Content-Id: <email_tfl_logo_gif>
+Content-Transfer-Encoding: base64
+Content-Type: image/gif; name="Attachment1.3"
+
+R0lGODlh2wAyALMAAMzW63CNxiZSqJmt1rbF4kNotOXq9Aw9noWdzomh0Etv
+t1Z3u+7x+N3k8QAzmf///yH5BAAAAAAALAAAAADbADIAAAT/8MlJq7046827
+/2AojmRpnmiqriYwBIpwHM4hKMEAsHzv/8ARIKGgOY7IZE2R2AWf0KgUBAgI
+lNisIOCcer9gngFxzZqxAoQhzG67OQTFeZ5VEN74PHtQpvuRAgN6g4RACUZ/
+iTUJhY2OJoeKkouPlZYbA4hmAgsDBGsMBgQDC31mB4KXqqoEplgFA2sZDQMF
+cwJ3q7qNBnKbah5jrkkKsrvHeAhnBbkgBLZmCMjTbQDDRwpdIQC+aNrU4FAB
+ZgXf29BYAeHrT9ZazSWtWubs9SgJ0SrKWYz2/indkhQwdsIAOmL/EpYAoAlJ
+KhUDshygJ6HBgosYFzRYleCKuhAJ/zSqICDSx6STKLFMAJCFIpiI9Ag44ALP
+wwIHLkPA/JGyJ0oLER8CYAAg1ygCDCQQZXCUwtGkD4a6qEkL6UqiBBqMIwBg
+4wQG43RAZToA6oMGDRiUpXDTHFmzS0d5lTAVX5emV6ea7eCzryKgDh46gPYg
+IpI7LPt8RLdAggPFE8YdEeB18JGbSBpPMHxEkMzDEkpd0da2wucjuSL2ySUZ
+yQ4G6ApAfYxE9ge/uOkAFizAidUGM6POZMDgClEHjJg6lg3WwZ2INAUISPp4
+h1bnXSvsFM7sGc4HN2uC/75yMAHvO4KeffxAZoCk43bc1BFR82P4zm/n3q9S
+e+AJDmgmAf8BAdjSGEupwMTAYwE0E6BSwRUw3YD5PSjBdv45MY5XwKlz0wWl
+ReYAh8Ft9+E4UCkYnAQoPmAhgvrxJ6MDuwEo4DgLyHTgf4V9BwA0tlnoYmNC
+wigkhhSYSKON44FIXmhLOtaYkk1eiBOMVu7wIo98zShjjVJWhFyYWO6UVHN3
+WLggIxJChU+aAiK5GXlvUsjIhxaEKEGd7Y1JpV1ZLljABLZQpxmWXXq5H5hD
+illOfcIl+B0uLvz32Hm27CBTIOMM2iiFXDyUpVLSJdDRhHhWcFMBGKVV6qlJ
+UckSMwCUhk8nN/WzpagbKMofo0JKFsOOku7Q2gLUrTaBPAHOJiD/bEhkuFIZ
+lEHpZBI7uPOYV1S2V0amDzCAzxH9fIooB74uGgJaHixlo7sVDLVBA/JywK4J
+93ZQLwXwopBubl4IqVAYnCVR7QoNXMPrFwuUOzAYDGWxsAkFIzHRwxh3EFBt
+BJlgUB0Zh6zBuFhIk8I+WDgs8sp0XYMLCswq0RvLNIuYRTktHJTERzXTrC0W
+2ZDAzSY59Twwyq+IB4fOSZhsNM29nJFGxxkIc0YxT/cc880DzHUBLUwbrHTW
+IWdCByeeGJCUKKRckwQqZD8diZcHqBw3zXPzV/fdZPPBXyB8xx1HbnYEfrfV
+PU1teOBVuH0LF4tHPkQRfhzARNGRk+0CDQwy1GADDjpkLjoYEQAAOw==
+
+--_----------=_152957348241155582
+Content-Disposition: attachment; filename="Attachment1.4"
+Content-Id: <email_tfl_web_gif>
+Content-Transfer-Encoding: base64
+Content-Type: image/gif; name="Attachment1.4"
+
+R0lGODlhdgAeAMQAAEBms7/M5X+ZzBBAn8/Z7O/y+TBZrI+l0t/l8nCNxmCA
+v5+y2VBzua+/3yBNpv///wAzmQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAdgAeAAAF/yAkjmRpnmiqrmzrvnAs
+z3Rt33iu73zv/8CgcEgsGo/IpHLJbDqHA4VA8azOCI8sIPAANAGPgLUEFo/A
+iIGa62WWx6T3SPAQjNgoQ7s0AAxycnB0WVkCXIRdeHyHhF4DDYQNfwwPBCMF
+D393XSJ0dm8GmFRPAAsPCAICAApcAakOiiSmBwwIdQ4DWAUBmAR/mA4QlA0l
+ip4QZaEPo1WBEMcisZudnAmVf7kPCRAH2hCmDMWcz3XIp6JwztAQ0iIKDw0K
+wOwP4SKUYgaVEAUFJsblwBSCY84MNTvRxpHI9qDAKC72hIURYcvagn/jjqFp
+aCDdxDnlErYB0BECJAV7II1Y8wUh2zaVpx6UJCni5MGC79KMGYDpgICL6yDF
+C1WgI4ACCAIsGJVtVy9NDrIgEEG047sCPzF9mmjK0hh5WYitO8r1oskwAbAc
+EPEokqaECL+Z5RYp4Ecsc63QRNEHmwgwa0VgWeiHxVsRDgoT7MGzgE9TBhdL
+hmCgQS8Bhydr3sy5s+fPoEOLHk26RggAOw==
+
+--_----------=_152957348241155582
+Content-Disposition: attachment; filename="Attachment1.6"
+Content-Id: <email_mayor_logo_gif>
+Content-Transfer-Encoding: base64
+Content-Type: image/gif; name="Attachment1.6"
+
+R0lGODlhggALALMPAOmRpylUqdAVRNpDaOJtitvN36Cz2ePi7u7x+BFBoERp
+tLvJ5Iigz8wAMwAzmf///yH5BAEAAA8ALAAAAACCAAsAAAT/cC306ivrWCSt
+1A83VYjBMGAlSZTlVsVpuNi6vMdSvM8htz3dppOT7HgIgDJ1KQALhYPDwfBM
+qxXDdPZQOBQVhiNAMSSmVws6jfSiA0c3+iUGu8ToBFecOC6mD3hTAVgVAAIN
+iQ0EFomMFQMNAGgzCGdUFgFTdlIOE2czWlQLZpgPm3hHLpoBBgteCRpeCieF
+YV93DnoLeDN4ZA9/DoFjDG5YAIkABYeLFYoAkJJ5BXJYUgFnLXV1FZqFwhpT
+N162D1oJQLNdpjzdFZ03twHEacLEdqIaiNEwiRqKBOyINGmMLl3fbtEyZeng
+jU5AHmiaMe4AqBflXGih5yWAAgWq/xRa2OgCwRQfBx24AvROosoDiSISfJAI
+0QAEBMdpUpnRJa8xI9ncc5FxzZiI7Gzdk+OJDi6RLsZx04UHn4VyBRK9mKkM
+EYGcnixWyVjgSio1TUOcXKXylMF07tqdA9ozrp259CxA7AaL5VOXBhD8c8GP
+ZgMoNac1jYNJEJpC467+5UNBp1wVkUMkrOv0bsNC67o19GuH8oNIAywkE0Ah
+0Y5kyjJXyHiGgQQ+aOVdOEOrV4VxBS46TXCCFQXOuRJ8BCnqBKwd74QN46Pg
+EpcCNgEQUPbssDTFupOii9rWbfhqebiYJ9bH3aUvLZBbcNzUwM4vR1pWFeSR
+SYFINfVj2BwRCBTGw4EIJphDSAkiyEKDENKQQYQUwgNFhREAADs=
+
+--_----------=_152957348241155582
+Content-Disposition: attachment; filename="123456789.csv"
+Content-Id: <generated-bed8644c3c4d7e22ecd8737ec0f5b912@messagingengine.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/csv; charset="us-ascii"; name="123456789.csv"
+
+CkRhdGUsU3RhcnQgVGltZSxFbmQgVGltZSxKb3VybmV5L0FjdGlvbixDaGFy
+Z2UsQ3JlZGl0LEJhbGFuY2UsTm90ZQoxNy1KdW4tMjAxOCwyMzo0MywsIkJ1
+cyBqb3VybmV5LCByb3V0ZSAzNDQiLDAuMzAsLDE2LjM1LCJUaGUgZmFyZSBm
+b3IgdGhpcyBqb3VybmV5IHdhcyBjYXBwZWQgYXMgeW91IHJlYWNoZWQgdGhl
+IGRhaWx5IGNoYXJnaW5nIGxpbWl0IGZvciB0aGUgem9uZXMgdXNlZCIKMTct
+SnVuLTIwMTgsMjM6MDgsMjM6MzQsIlR1Zm5lbGwgUGFyayB0byBWYXV4aGFs
+bCBbTG9uZG9uIFVuZGVyZ3JvdW5kXSIsMS42MCwsMTYuNjUsIiIKMTctSnVu
+LTIwMTgsMTQ6MzUsMTU6MDUsIkNsYXBoYW0gSnVuY3Rpb24gW05hdGlvbmFs
+IFJhaWxdIHRvIEtlbnRpc2ggVG93biIsMi42MCwsMTguMjUsIiIKMTYtSnVu
+LTIwMTgsMjM6NTMsLCJCdXMgam91cm5leSwgcm91dGUgMzQ0IiwwLjMwLCwy
+MC44NSwiVGhlIGZhcmUgZm9yIHRoaXMgam91cm5leSB3YXMgY2FwcGVkIGFz
+IHlvdSByZWFjaGVkIHRoZSBkYWlseSBjaGFyZ2luZyBsaW1pdCBmb3IgdGhl
+IHpvbmVzIHVzZWQiCjE2LUp1bi0yMDE4LDIzOjI0LDIzOjUyLCJUdWZuZWxs
+IFBhcmsgdG8gVmF1eGhhbGwgW0xvbmRvbiBVbmRlcmdyb3VuZF0iLDEuNjAs
+LDIxLjE1LCIiCjE2LUp1bi0yMDE4LDE0OjE3LDE0OjU1LCJDbGFwaGFtIEp1
+bmN0aW9uIFtOYXRpb25hbCBSYWlsXSB0byBUdWZuZWxsIFBhcmsiLDIuNjAs
+LDIyLjc1LCIiCjE1LUp1bi0yMDE4LDE5OjU0LDIwOjI0LCJPeGZvcmQgQ2ly
+Y3VzIHRvIENsYXBoYW0gSnVuY3Rpb24gW05hdGlvbmFsIFJhaWxdIiwyLjYw
+LCwyNS4zNSwiIgoxNC1KdW4tMjAxOCwxNjowMywxNjoxNCwiQ2hhbmNlcnkg
+TGFuZSB0byBPeGZvcmQgQ2lyY3VzIiwxLjQwLCwyNy45NSwiVGhlIGZhcmUg
+Zm9yIHRoaXMgam91cm5leSB3YXMgY2FwcGVkIGFzIHlvdSByZWFjaGVkIHRo
+ZSBkYWlseSBjaGFyZ2luZyBsaW1pdCBmb3IgdGhlIHpvbmVzIHVzZWQiCjE0
+LUp1bi0yMDE4LDE2OjAzLCwiQXV0byB0b3AtdXAsIENoYW5jZXJ5IExhbmUi
+LCwyMC4wMCwyOS4zNSwiIgoxNC1KdW4tMjAxOCwxMDo1MywsIkJ1cyBqb3Vy
+bmV5LCByb3V0ZSA1MjEiLDEuNTAsLDkuMzUsIiIKMTQtSnVuLTIwMTgsMTA6
+MjksMTA6NDIsIkNsYXBoYW0gSnVuY3Rpb24gW05hdGlvbmFsIFJhaWxdIHRv
+IFdhdGVybG9vIChwbGF0Zm9ybXMgMS0xMSkgW05hdGlvbmFsIFJhaWxdIiwx
+LjYwLCwxMC44NSwiIgoxMy1KdW4tMjAxOCwyMDoyNCwsIkJ1cyBqb3VybmV5
+LCByb3V0ZSAzNDQiLDAuNzAsLDEyLjQ1LCJUaGUgZmFyZSBmb3IgdGhpcyBq
+b3VybmV5IHdhcyBjYXBwZWQgYXMgeW91IHJlYWNoZWQgdGhlIGRhaWx5IGNo
+YXJnaW5nIGxpbWl0IGZvciB0aGUgem9uZXMgdXNlZCIKMTMtSnVuLTIwMTgs
+MjA6MDksMjA6MjIsIk94Zm9yZCBDaXJjdXMgdG8gVmF1eGhhbGwgW0xvbmRv
+biBVbmRlcmdyb3VuZF0iLDEuNjAsLDEzLjE1LCIiCjEzLUp1bi0yMDE4LDA4
+OjQ1LDA5OjA3LCJDbGFwaGFtIEp1bmN0aW9uIFtOYXRpb25hbCBSYWlsXSB0
+byBPeGZvcmQgQ2lyY3VzIiw0LjUwLCwxNC43NSwiIgo=
+
+--_----------=_152957348241155582--
+
