@@ -7,6 +7,10 @@ clean:
 test:
 	pipenv run pytest -s
 
+.PHONY: test-watch
+test-watch:
+	pipenv run ptw -- -s
+
 build:
 	bash -c "cd build && pip install -r <(pipenv lock -r) --target build/"
 	find build -name "__pycache__" -type d -print | xargs rm -r --
