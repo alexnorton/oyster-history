@@ -1,3 +1,5 @@
 .ipynb_checkpoints
 *.ipynb
 .pytest_cache
+build
+package.zip
