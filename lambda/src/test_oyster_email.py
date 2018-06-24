@@ -1,13 +1,13 @@
 import json
 
-import handler
+from oyster_email import parse_csv, transform_row, parse_datetimes
 
 
 def test_parse_csv():
     with open("test_data/test_csv.csv", "r") as csv_file:
         with open("test_data/parsed_csv.json", "r") as json_file:
             csv = csv_file.read()
-            parsed = handler.parse_csv(csv)
+            parsed = parse_csv(csv)
 
             expected = json.dumps(json.load(json_file))
 
@@ -26,7 +26,7 @@ def test_transform_row():
         "Note": "",
     }
 
-    transformed = handler.transform_row(row)
+    transformed = transform_row(row)
 
     assert "Date" not in transformed
     assert transformed["Start Time"] == "2017-12-03T17:08:00+00:00"
@@ -41,22 +41,22 @@ def test_transform_row():
 
 
 def test_parse_datetimes():
-    assert handler.parse_datetimes("03-Dec-2017", "17:08", "17:20") == (
+    assert parse_datetimes("03-Dec-2017", "17:08", "17:20") == (
         "2017-12-03T17:08:00+00:00",
         "2017-12-03T17:20:00+00:00",
     )
 
-    assert handler.parse_datetimes("01-Dec-2017", "03:44", "03:53") == (
+    assert parse_datetimes("01-Dec-2017", "03:44", "03:53") == (
         "2017-12-02T03:44:00+00:00",
         "2017-12-02T03:53:00+00:00",
     )
 
-    assert handler.parse_datetimes("23-Jun-2018", "13:47", "14:15") == (
+    assert parse_datetimes("23-Jun-2018", "13:47", "14:15") == (
         "2018-06-23T13:47:00+01:00",
         "2018-06-23T14:15:00+01:00",
     )
 
-    assert handler.parse_datetimes("17-Jun-2018", "23:43", "") == (
+    assert parse_datetimes("17-Jun-2018", "23:43", "") == (
         "2018-06-17T23:43:00+01:00",
         None,
     )
