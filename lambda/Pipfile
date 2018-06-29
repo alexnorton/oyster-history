@@ -10,6 +10,7 @@ pytz = "*"
 [dev-packages]
 pytest = "*"
 pytest-watch = "*"
+jupyter = "*"
 
 [requires]
 python_version = "3.6"
