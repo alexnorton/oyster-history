@@ -9,17 +9,15 @@ bucket = "oyster-stats"
 
 def handler(event, context):
     message_id = get_message_id(event)
-
     message_body = get_message_body(message_id)
 
     message = parse_message(message_body)
-
     attachment = get_csv_attachment(message)
     csv = attachment.get_content()
 
-    csv_dict = parse_csv(csv)
+    events = parse_csv(csv)
 
-    print(csv_dict)
+    print(events)
 
 
 def get_message_id(event):
