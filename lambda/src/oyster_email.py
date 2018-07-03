@@ -6,6 +6,14 @@ from datetime import datetime, timedelta
 from pytz import timezone
 
 
+def get_events(message_body):
+    message = parse_message(message_body)
+    attachment = get_csv_attachment(message)
+    csv = attachment.get_content()
+    events = parse_csv(csv)
+    return events
+
+
 def parse_message(message_body):
     parser = Parser(policy=email.policy.default)
     return parser.parsestr(message_body)
