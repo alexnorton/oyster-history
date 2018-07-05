@@ -56,14 +56,18 @@ def parse_datetimes(date, start_time, end_time):
 
     end = parse_datetime(date, end_time) if end_time else None
 
-    if start.hour < 4 or start.hour == 4 and start.minute < 30:
-        start = start + timedelta(days=1)
-        end = end + timedelta(days=1) if end else None
+    if start:
+        if start.hour < 4 or start.hour == 4 and start.minute < 30:
+            start = start + timedelta(days=1)
+            end = end + timedelta(days=1) if end else None
 
-    return start.isoformat(), end.isoformat() if end else None
+    return start.isoformat() if start else None, end.isoformat() if end else None
 
 
 def parse_datetime(date, time):
-    return timezone("Europe/London").localize(
-        datetime.strptime("{} {}".format(date, time), "%d-%b-%Y %H:%M")
-    )
+    if date and time:
+        return timezone("Europe/London").localize(
+            datetime.strptime("{} {}".format(date, time), "%d-%b-%Y %H:%M")
+        )
+    else:
+        return None

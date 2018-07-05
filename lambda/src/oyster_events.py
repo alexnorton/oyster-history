@@ -12,7 +12,12 @@ KEY_COLUMN_MAPPING = [
 
 
 def add_events(current, new):
-    return (current + new).sort(key=lambda event: event["Start Time"])
+    return sorted(
+        current + new,
+        key=lambda event: event["Start Time"]
+        if event["Start Time"]
+        else event["End Time"],
+    )
 
 
 def from_json(string):
