@@ -10,7 +10,7 @@ def get_events(message_body):
     message = parse_message(message_body)
     attachment = get_csv_attachment(message)
     csv = attachment.get_content()
-    events = parse_csv(csv)
+    events = [transform_row(row) for row in parse_csv(csv)]
     return events
 
 
