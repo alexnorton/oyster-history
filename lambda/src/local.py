@@ -8,8 +8,6 @@ events = []
 email_path = "test_data/emails"
 
 for filename in os.listdir(email_path):
-    print(filename)
-    print(events)
     with open(email_path + "/" + filename) as f:
         email_body = f.read()
 
