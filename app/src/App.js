@@ -30,8 +30,8 @@ class App extends Component {
         <tbody>
           {data.map((event, index) => (
             <tr key={index}>
-              <td>{new Date(event[0]).toLocaleString()}</td>
-              <td>{new Date(event[1]).toLocaleString()}</td>
+              <td>{event[0] && new Date(event[0]).toLocaleString()}</td>
+              <td>{event[1] && new Date(event[1]).toLocaleString()}</td>
               <td>{event[2]}</td>
               <td>{event[3] !== null && `£${event[3].toFixed(2)}`}</td>
               <td>{event[4] !== null && `£${event[4].toFixed(2)}`}</td>
