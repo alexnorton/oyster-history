@@ -1,10 +1,13 @@
+import os
+
 import boto3
 
 from oyster_email import parse_message, get_csv_attachment, parse_csv
 
 s3 = boto3.resource("s3")
 
-bucket = "oyster-stats"
+email_bucket = os.environ.EMAIL_BUCKET
+data_bucket = os.environ.DATA_BUCKET
 
 
 def handler(event, context):
@@ -26,5 +29,5 @@ def get_message_id(event):
 
 
 def get_message_body(message_id):
-    email_object = s3.Object(bucket, message_id)
+    email_object = s3.Object(email_bucket, message_id)
     return email_object.get()["Body"].read().decode("utf-8")

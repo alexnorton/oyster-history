@@ -9,6 +9,10 @@ Resources:
           def handler(event, context):
             return None
       Runtime: python3.6
+      Environment:
+        Variables:
+          EMAIL_BUCKET: !Ref EmailBucket
+          DATA_BUCKET: !Ref DataBucket
   EmailHandlerRole:
     Type: AWS::IAM::Role
     Properties:
