@@ -8,5 +8,4 @@ install:
   - pipenv install --dev
 
 script:
-  - cd lambda
   - pipenv run pytest
