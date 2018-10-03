@@ -78,3 +78,6 @@ Resources:
                 aws:Referer: !Ref AWS::AccountId
   DataBucket:
     Type: AWS::S3::Bucket
+Outputs:
+  EmailHandlerFunctionName:
+    Value: !Ref EmailHandlerFunction

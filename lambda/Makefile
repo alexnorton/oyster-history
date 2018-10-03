@@ -1,4 +1,11 @@
-FUNCTION_NAME=oyster-history-EmailHandlerFunction-M03ANSGN3Z6X
+include ../infrastructure/.env
+
+FUNCTION_NAME=$(shell \
+	aws cloudformation describe-stacks \
+		--stack-name $(STACK_NAME) \
+		--query 'Stacks[0].Outputs[?OutputKey==`EmailHandlerFunctionName`].OutputValue' \
+		--output text \
+)
 
 .PHONY: clean
 clean:

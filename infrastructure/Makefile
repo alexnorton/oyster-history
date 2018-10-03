@@ -1,4 +1,5 @@
-STACK_NAME=oyster-history
+include ./.env
+
 TEMPLATE=file://stack.yml
 
 .PHONY: create-stack
