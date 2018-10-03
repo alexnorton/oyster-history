@@ -1,0 +1,12 @@
+language: python
+python:
+  - '3.6'
+
+install:
+  - pip install pipenv
+  - cd lambda
+  - pipenv install --dev
+
+script:
+  - cd lambda
+  - pipenv run pytest
