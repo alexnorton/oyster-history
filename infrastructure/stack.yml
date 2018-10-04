@@ -78,6 +78,48 @@ Resources:
                 aws:Referer: !Ref AWS::AccountId
   DataBucket:
     Type: AWS::S3::Bucket
+  DataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref DataBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Principal:
+              CanonicalUser: !GetAtt DataCloudFrontDistributionS3AccessIdentity.S3CanonicalUserId
+            Resource: !Join
+              - '/'
+              - - !GetAtt DataBucket.Arn
+                - '*'
+  DataCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        DefaultCacheBehavior:
+          AllowedMethods: ['GET', 'HEAD', 'OPTIONS']
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: DataBucketOrigin
+          ViewerProtocolPolicy: 'redirect-to-https'
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - DomainName: !GetAtt DataBucket.DomainName
+            Id: DataBucketOrigin
+            S3OriginConfig:
+              OriginAccessIdentity: !Join
+                - ''
+                - - origin-access-identity/cloudfront/
+                  - !Ref DataCloudFrontDistributionS3AccessIdentity
+        PriceClass: PriceClass_100
+  DataCloudFrontDistributionS3AccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Access Identity for Oyster History data bucket
 Outputs:
   EmailHandlerFunctionName:
     Value: !Ref EmailHandlerFunction
