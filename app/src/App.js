@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import transformEvent from './transformEvents';
 
 class App extends Component {
   constructor(props) {
@@ -8,12 +9,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/data.json')
+    fetch('/events.json')
       .then(res => res.json())
-      .then(data => this.setState({ data }));
+      .then(data =>
+        this.setState({ events: data.map(event => transformEvent(event)) })
+      );
   }
 
-  renderData(data) {
+  renderEvents(events) {
     return (
       <table>
         <thead>
@@ -28,17 +31,27 @@ class App extends Component {
           </tr>
         </thead>
         <tbody>
-          {data.map((event, index) => (
-            <tr key={index}>
-              <td>{event[0] && new Date(event[0]).toLocaleString()}</td>
-              <td>{event[1] && new Date(event[1]).toLocaleString()}</td>
-              <td>{event[2]}</td>
-              <td>{event[3] !== null && `£${event[3].toFixed(2)}`}</td>
-              <td>{event[4] !== null && `£${event[4].toFixed(2)}`}</td>
-              <td>{event[5] !== null && `£${event[5].toFixed(2)}`}</td>
-              <td>{event[6]}</td>
-            </tr>
-          ))}
+          {events
+            .sort(
+              (a, b) => (b.startTime || b.endTime) - (a.startTime || a.endTime)
+            )
+            .map((event, index) => (
+              <tr key={index}>
+                <td>{event.startTime && event.startTime.toLocaleString()}</td>
+                <td>{event.endTime && event.endTime.toLocaleString()}</td>
+                <td>{event.action}</td>
+                <td>
+                  {event.charge !== null && `£${event.charge.toFixed(2)}`}
+                </td>
+                <td>
+                  {event.credit !== null && `£${event.credit.toFixed(2)}`}
+                </td>
+                <td>
+                  {event.balance !== null && `£${event.balance.toFixed(2)}`}
+                </td>
+                <td>{event.note}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     );
@@ -48,7 +61,9 @@ class App extends Component {
     return (
       <div>
         <h1>Oyster history</h1>
-        {this.state.data ? this.renderData(this.state.data) : 'Loading...'}
+        {this.state.events
+          ? this.renderEvents(this.state.events)
+          : 'Loading...'}
       </div>
     );
   }
