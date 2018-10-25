@@ -6,3 +6,4 @@ package.zip
 lambda/test_data/emails
 node_modules
 requirements.txt
+app/.env
