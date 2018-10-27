@@ -1,6 +1,7 @@
 const transformEvent = event => {
   const startTime = event[0] && new Date(event[0]);
   const endTime = event[1] && new Date(event[1]);
+  const sortTime = startTime || endTime;
   const action = event[2];
   const charge = event[3];
   const credit = event[4];
@@ -10,6 +11,7 @@ const transformEvent = event => {
   return {
     startTime,
     endTime,
+    sortTime,
     action,
     charge,
     credit,

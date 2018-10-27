@@ -5,10 +5,18 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+tr td {
+  border-bottom: 1px solid #eee;
+}
+
 tr:hover {
-  background-color: rgb(208, 232, 240);
+  background-color: #ddd;
 }
 
 td {
-  padding: 5px;
+  padding: 7px;
 }
