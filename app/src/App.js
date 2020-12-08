@@ -20,8 +20,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Oyster history</h1>
+      <div className="max-w-screen-lg mx-auto py-4">
         {this.state.events ? (
           <EventsTable events={this.state.events} />
         ) : (

@@ -33,23 +33,23 @@ const EventsTable = ({ events }) => (
       .map(({ date, events }) => (
         <tbody key={date.toString()}>
           <tr>
-            <td colSpan="5" style={{ backgroundColor: 'rgb(208, 232, 240)' }}>
+            <td colSpan="5" className="text-sm bg-gray-200">
               {date.format('dddd, D MMMM YYYY')}
             </td>
           </tr>
           {events.map((event, index) => (
-            <tr key={index}>
+            <tr key={index} className="py-2">
               <td>
                 {event.startTime && dayjs(event.startTime).format('HH:mm')}
               </td>
               <td>{event.endTime && dayjs(event.endTime).format('HH:mm')}</td>
               <td>{event.action}</td>
-              <td style={{ textAlign: 'right' }}>
+              <td className="text-right">
                 {event.charge !== null
                   ? `£${event.charge.toFixed(2)}`
                   : `+£${event.credit.toFixed(2)}`}
               </td>
-              <td style={{ textAlign: 'right' }}>
+              <td className="text-right">
                 {event.balance !== null && `£${event.balance.toFixed(2)}`}
               </td>
             </tr>
