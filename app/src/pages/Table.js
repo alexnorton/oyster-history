@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 
-const EventsTable = ({ events }) => (
+const Table = ({ events }) => (
   <table>
     <thead>
       <tr>
@@ -59,4 +59,4 @@ const EventsTable = ({ events }) => (
   </table>
 );
 
-export default EventsTable;
+export default Table;
